@@ -5,6 +5,10 @@ Productivity timer which allows you to work without interuption by automatically
 
 Works great with [Pomodoro](http://pomodorotechnique.com/) and other time management techniques.
 
+## Screenshot
+
+![App screenshot](screenshot.png "App screenshot")
+
 ## Requirements:
 
 I'm using the following to develop the app:
