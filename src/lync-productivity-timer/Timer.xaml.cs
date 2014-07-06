@@ -29,9 +29,18 @@ namespace lync_productivity_timer
             updateTimer = new DispatcherTimer();
             updateTimer.Interval = new TimeSpan(0, 1, 0);
             updateTimer.Tick += new EventHandler(updateTimer_Tick);
+            updateTimer.IsEnabled = false;
 
             txtAwayMessageTemplate.Text = "In 'flow' for the next {0}. Please wait until {1} or email me if it's not urgent. Thanks!";
             lblReplacements.Content = "Replacements:" + Environment.NewLine + "  {0}: 'xx minute(s)' - countdown" + Environment.NewLine + "  {1}: 'xx:xx' - end time";
+        }
+
+        private void TriggerAlarm()
+        {
+            // TODO: Replace with a tray notification?
+            MessageBox.Show("Productivity session has ended");
+
+            // TODO: Play a sound?
         }
 
         void updateTimer_Tick(object sender, EventArgs e)
@@ -40,6 +49,7 @@ namespace lync_productivity_timer
             if (minutes <= 0)
             {
                 // Alarm!
+                TriggerAlarm();
                 btnStop_Click(this, null);
             }
             else
