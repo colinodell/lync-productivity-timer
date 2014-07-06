@@ -59,6 +59,7 @@ namespace lync_productivity_timer
             btnStart.IsEnabled = false;
             
             minutes = Int16.Parse(txtLength.Text);
+            updateTimer.IsEnabled = true;
             updateTimer.Start();
             
             UpdateLync(PublishableContactInformationType.Availability, ContactAvailability.DoNotDisturb);    
@@ -74,6 +75,7 @@ namespace lync_productivity_timer
             btnStop.IsEnabled = false;
 
             updateTimer.Stop();
+            updateTimer.IsEnabled = false;
 
             UpdateLync(PublishableContactInformationType.Availability, ContactAvailability.Free);
             UpdateLync(PublishableContactInformationType.PersonalNote, "");
@@ -100,8 +102,22 @@ namespace lync_productivity_timer
             }
         }
 
-        private void MenuItem_Exit_Click(object sender, RoutedEventArgs e)
+        private void ExitApp(object sender, EventArgs e)
         {
+            if (updateTimer.IsEnabled)
+            {
+                if (MessageBox.Show("You have a timer running. Exit anyway?", "Running Timer", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                {
+                    if (e is System.ComponentModel.CancelEventArgs)
+                    {
+                        ((System.ComponentModel.CancelEventArgs) e).Cancel = true;
+                    }
+                    return;
+                }
+
+                btnStop_Click(this, null);
+            }
+
             Application.Current.Shutdown();
         }
 
