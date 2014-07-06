@@ -16,7 +16,7 @@ using Microsoft.Lync.Model;
 namespace lync_productivity_timer
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for Timer.xaml
     /// </summary>
     public partial class Timer : Window
     {
