@@ -36,6 +36,8 @@ namespace lync_productivity_timer
 
             txtAwayMessageTemplate.Text = "In 'flow' for the next {0}. Please wait until {1} or email me if it's not urgent. Thanks!";
             lblReplacements.Content = "Replacements:" + Environment.NewLine + "  {0}: 'xx minute(s)' - countdown" + Environment.NewLine + "  {1}: 'xx:xx' - end time";
+
+            GetLyncClient();
         }
 
         private void TriggerAlarm()
@@ -105,7 +107,7 @@ namespace lync_productivity_timer
 
         private void UpdateLync(PublishableContactInformationType type, object value)
         {
-            var client = LyncClient.GetClient();
+            var client = GetLyncClient();
             var contactInfo = new Dictionary<PublishableContactInformationType, object>();
             contactInfo.Add(type, value);
             try
@@ -142,6 +144,36 @@ namespace lync_productivity_timer
         private void MenuItem_About_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("(c) 2014 Colin O'Dell", "About " + this.Title, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private LyncClient GetLyncClient()
+        {
+            var client = LyncClient.GetClient();
+
+            if (client == null)
+            {
+                UpdateStatusBar("Unable to obtain client interface");
+            }
+            if (client.InSuppressedMode == true)
+            {
+                UpdateStatusBar("Lync is uninitialized");
+            }
+
+            if (client.State == ClientState.SignedIn)
+            {
+                UpdateStatusBar("Connected to Lync");
+            }
+            else
+            {
+                UpdateStatusBar("Lync is NOT signed in");
+            }
+
+            return client;
+        }
+
+        private void UpdateStatusBar(string status)
+        {
+            txtLyncStatus.Text = String.Format("Status: {0}", status);
         }
 
         private void Window_Activated(object sender, EventArgs e)
