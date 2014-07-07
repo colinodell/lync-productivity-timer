@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Microsoft.Lync.Model;
+using System.Media;
 
 namespace lync_productivity_timer
 {
@@ -22,10 +23,12 @@ namespace lync_productivity_timer
     {
         private DispatcherTimer updateTimer;
         private short minutes;
+        private FlashWindowHelper blinker;
 
         public Timer()
         {
             InitializeComponent();
+            blinker = new FlashWindowHelper(Application.Current);
             updateTimer = new DispatcherTimer();
             updateTimer.Interval = new TimeSpan(0, 1, 0);
             updateTimer.Tick += new EventHandler(updateTimer_Tick);
@@ -37,10 +40,14 @@ namespace lync_productivity_timer
 
         private void TriggerAlarm()
         {
+            // TODO: Play custom sound?
+            SystemSounds.Asterisk.Play();
+
+            // Blink the window
+            blinker.FlashApplicationWindow();
+
             // TODO: Replace with a tray notification?
             MessageBox.Show("Productivity session has ended");
-
-            // TODO: Play a sound?
         }
 
         void updateTimer_Tick(object sender, EventArgs e)
@@ -134,6 +141,11 @@ namespace lync_productivity_timer
         private void MenuItem_About_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("(c) 2014 Colin O'Dell", "About " + this.Title, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            blinker.StopFlashing();
         }
     }
 }

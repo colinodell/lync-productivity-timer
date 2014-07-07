@@ -81,6 +81,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FlashWindowHelper.cs" />
     <Compile Include="Timer.xaml.cs">
       <DependentUpon>Timer.xaml</DependentUpon>
       <SubType>Code</SubType>
