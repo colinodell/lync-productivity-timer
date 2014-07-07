@@ -55,9 +55,10 @@ namespace lync_productivity_timer
             minutes -= 1;
             if (minutes <= 0)
             {
+                btnStop_Click(this, null);
+
                 // Alarm!
                 TriggerAlarm();
-                btnStop_Click(this, null);
             }
             else
             {
